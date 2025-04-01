@@ -213,20 +213,20 @@ class _CompanyLoginState extends State<CompanyLogin> {
                   ),
                   SizedBox(height: 10),
 
-                  /// ✅ Partner Checkbox
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: isPartner,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            isPartner = value!;
-                          });
-                        },
-                      ),
-                      Text("Partner"),
-                    ],
-                  ),
+                  // /// ✅ Partner Checkbox
+                  // Row(
+                  //   children: [
+                  //     Checkbox(
+                  //       value: isPartner,
+                  //       onChanged: (bool? value) {
+                  //         setState(() {
+                  //           isPartner = value!;
+                  //         });
+                  //       },
+                  //     ),
+                  //     Text("Partner"),
+                  //   ],
+                  // ),
                   SizedBox(height: 10),
 
                   /// ℹ️ Info Text

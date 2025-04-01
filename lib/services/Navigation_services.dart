@@ -35,13 +35,13 @@ class NavigationService {
     );
   }
 
-  void pushReplacementnamed(String routname) {
-    navigatorkey.currentState?.pushReplacementNamed(routname);
-  }
-
-  // void pushReplacementnamed(String routeName) {
-  //   navigatorkey.currentState?.pushNamedAndRemoveUntil(routeName, (route) => false);
+  // void pushReplacementnamed(String routname) {
+  //   navigatorkey.currentState?.pushReplacementNamed(routname);
   // }
+
+  void pushReplacementnamed(String routeName) {
+    navigatorkey.currentState?.pushNamedAndRemoveUntil(routeName, (route) => false);
+  }
 
   void goback() {
     navigatorkey.currentState?.pop();

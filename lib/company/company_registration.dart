@@ -39,6 +39,10 @@ class _CompanyRegistrationState extends State<CompanyRegistration> {
   List<dynamic> municipalities = [];
   List<dynamic> services = [];
 
+  // Change from String? to List<String>
+  List<String> selectedCounties = [];
+  List<String> selectedMunicipalities = [];
+
   String? selectedCounty;
   String? selectedMunicipality;
   String? selectedService;
@@ -213,50 +217,87 @@ class _CompanyRegistrationState extends State<CompanyRegistration> {
                   validator: (value) => value!.isEmpty ? 'Required field' : null,
                 ),
 
+                // _buildLabel("County"),
+                // DropdownButtonFormField<String>(
+                //   value: selectedCounty,
+                //   hint: Text("Select County"),
+                //   validator: (value) => value == null ? 'Please select a county' : null,
+                //   onChanged: (val) {
+                //     setState(() => selectedCounty = val);
+                //     fetchMunicipalities(val!);
+                //   },
+                //   items: counties.map<DropdownMenuItem<String>>((county) {
+                //     return DropdownMenuItem<String>(
+                //       value: county['countyId'].toString(),
+                //       child: Text(county['countyName']),
+                //     );
+                //   }).toList(),
+                //   decoration: InputDecoration(
+                //     border: OutlineInputBorder(
+                //       borderRadius: BorderRadius.circular(10),
+                //     ),
+                //     contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                //   ),
+                // ),
+                //
+                // if (selectedCounty != null) ...[
+                //   _buildLabel("Municipality"),
+                //   DropdownButtonFormField<String>(
+                //     value: selectedMunicipality,
+                //     hint: Text("Select Municipality"),
+                //     validator: (value) => value == null ? 'Please select a municipality' : null,
+                //     onChanged: (val) => setState(() => selectedMunicipality = val),
+                //     items: municipalities.map<DropdownMenuItem<String>>((municipality) {
+                //       return DropdownMenuItem<String>(
+                //         value: municipality['municipalityId'].toString(),
+                //         child: Text(municipality['municipalityName']),
+                //       );
+                //     }).toList(),
+                //     decoration: InputDecoration(
+                //       border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(10),
+                //       ),
+                //       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                //     ),
+                //   ),
+                // ],
                 _buildLabel("County"),
-                DropdownButtonFormField<String>(
-                  value: selectedCounty,
-                  hint: Text("Select County"),
-                  validator: (value) => value == null ? 'Please select a county' : null,
-                  onChanged: (val) {
-                    setState(() => selectedCounty = val);
-                    fetchMunicipalities(val!);
+                MultiSelectDropdown(
+                  items: counties,
+                  selectedValues: selectedCounties,
+                  hintText: "Select one or more counties",
+                  displayItem: (county) => county['countyName'],
+                  getValue: (county) => county['countyId'].toString(),
+                  onChanged: (values) {
+                    setState(() {
+                      selectedCounties = values;
+                      selectedMunicipalities = [];
+                    });
+
+                    if (values.isNotEmpty) {
+                      fetchMunicipalities(values.last); // Fetch municipalities for the latest selected county
+                    }
                   },
-                  items: counties.map<DropdownMenuItem<String>>((county) {
-                    return DropdownMenuItem<String>(
-                      value: county['countyId'].toString(),
-                      child: Text(county['countyName']),
-                    );
-                  }).toList(),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  ),
+                  validator: (values) => values.isEmpty ? 'Please select at least one county' : null,
                 ),
 
-                if (selectedCounty != null) ...[
+                if (selectedCounties.isNotEmpty) ...[
                   _buildLabel("Municipality"),
-                  DropdownButtonFormField<String>(
-                    value: selectedMunicipality,
-                    hint: Text("Select Municipality"),
-                    validator: (value) => value == null ? 'Please select a municipality' : null,
-                    onChanged: (val) => setState(() => selectedMunicipality = val),
-                    items: municipalities.map<DropdownMenuItem<String>>((municipality) {
-                      return DropdownMenuItem<String>(
-                        value: municipality['municipalityId'].toString(),
-                        child: Text(municipality['municipalityName']),
-                      );
-                    }).toList(),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    ),
+                  MultiSelectDropdown(
+                    items: municipalities
+                        .where((m) => selectedCounties.contains(m['countyId'].toString()))
+                        .toList(),
+                    selectedValues: selectedMunicipalities,
+                    hintText: "Select one or more municipalities",
+                    displayItem: (municipality) => municipality['municipalityName'],
+                    getValue: (municipality) => municipality['municipalityId'].toString(),
+                    onChanged: (values) {
+                      setState(() => selectedMunicipalities = values);
+                    },
+                    validator: (values) => values.isEmpty ? 'Please select at least one municipality' : null,
                   ),
                 ],
+
 
                 _buildLabel("Service"),
                 DropdownButtonFormField<String>(
@@ -321,10 +362,10 @@ class _CompanyRegistrationState extends State<CompanyRegistration> {
                 SizedBox(height: 12),
                 Center(
                   child: TextButton(
-                    onPressed: () => _navigationService.pushnamed("/user-registration"),
+                    onPressed: () => _navigationService.pushnamed("/registration"),
                     child: Text(
                       "Register as user",
-                      style: TextStyle(color: Colors.blue),
+                      style: TextStyle(color: Colors.grey[800]),
                     ),
                   ),
                 ),
@@ -361,8 +402,10 @@ class _CompanyRegistrationState extends State<CompanyRegistration> {
         companyRegistrationNumber: _registrationNumberController.text,
         companyPresentation: _descriptionController.text,
         competenceDescription: _descriptionController.text,
-        countyIdList: selectedCounty != null ? [selectedCounty] : [],
-        municipalityIdList: selectedMunicipality != null ? [selectedMunicipality] : [],
+        // countyIdList: selectedCounty != null ? [selectedCounty] : [],
+        // municipalityIdList: selectedMunicipality != null ? [selectedMunicipality] : [],
+        countyIdList: selectedCounties.isNotEmpty ? selectedCounties : [],
+        municipalityIdList: selectedMunicipalities.isNotEmpty ? selectedMunicipalities : [],
         serviceIdList: selectedService != null ? [selectedService] : [],
         logoImageBytes: logoBytes,
         logoImageName: logoName,
@@ -370,7 +413,7 @@ class _CompanyRegistrationState extends State<CompanyRegistration> {
 
       if (result?['statusCode'] == 1) {
         _alertServices.showToast(text: "Company registration successful!", icon: Icons.check);
-        _navigationService.pushReplacementnamed("/home");
+        _navigationService.pushReplacementnamed("/homeloggedIn");
       } else {
         _alertServices.showToast(
           text: result?['statusMessage'] ?? "Registration failed",
@@ -385,5 +428,120 @@ class _CompanyRegistrationState extends State<CompanyRegistration> {
     } finally {
       setState(() => _isLoading = false);
     }
+  }
+
+}
+
+
+class MultiSelectDropdown extends StatefulWidget {
+  final List<dynamic> items;
+  final List<String> selectedValues;
+  final String hintText;
+  final String Function(dynamic) displayItem;
+  final String Function(dynamic) getValue;
+  final void Function(List<String>) onChanged;
+  final String? Function(List<String>)? validator;
+
+  const MultiSelectDropdown({
+    Key? key,
+    required this.items,
+    required this.selectedValues,
+    required this.hintText,
+    required this.displayItem,
+    required this.getValue,
+    required this.onChanged,
+    this.validator,
+  }) : super(key: key);
+
+  @override
+  _MultiSelectDropdownState createState() => _MultiSelectDropdownState();
+}
+
+class _MultiSelectDropdownState extends State<MultiSelectDropdown> {
+  void _openMultiSelectDialog() async {
+    List<String> tempSelected = List.from(widget.selectedValues);
+
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Select Options",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  Expanded(
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: widget.items.map((item) {
+                        String itemValue = widget.getValue(item);
+                        return CheckboxListTile(
+                          title: Text(widget.displayItem(item)),
+                          value: tempSelected.contains(itemValue),
+                          onChanged: (checked) {
+                            setState(() {
+                              checked == true
+                                  ? tempSelected.add(itemValue)
+                                  : tempSelected.remove(itemValue);
+                            });
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[800],
+                    ),
+                    onPressed: () {
+                      widget.onChanged(tempSelected);
+                      Navigator.pop(context);
+                    },
+                    child: Text("Done",style: TextStyle(color: Colors.white),),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _openMultiSelectDialog,
+      child: InputDecorator(
+        decoration: InputDecoration(
+          labelText: widget.hintText,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          suffixIcon: Icon(Icons.arrow_drop_down),
+        ),
+        child: Wrap(
+          spacing: 6.0,
+          children: widget.selectedValues.map((value) {
+            return Chip(
+              label: Text(value),
+              onDeleted: () {
+                List<String> updatedValues = List.from(widget.selectedValues);
+                updatedValues.remove(value);
+                widget.onChanged(updatedValues);
+              },
+            );
+          }).toList(),
+        ),
+      ),
+    );
   }
 }

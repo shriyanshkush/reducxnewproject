@@ -130,6 +130,56 @@ class AuthServices {
     return false;
   }
 
+  /// ✅ **Forgot Password**
+  Future<bool> forgotPasswordCompany(String email) async {
+    try {
+      final response = await http.post(
+        Uri.parse("$companyBaseUrl/ForgotPassword"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(email), // API expects raw string
+      );
+
+      if (response.statusCode == 200) {
+        print("✅ Password reset email sent: ${response.body}");
+        return true;
+      } else {
+        print("❌ Forgot password failed: ${response.body}");
+      }
+    } catch (e) {
+      print("⚠️ Forgot password error: $e");
+    }
+    return false;
+  }
+
+  /// ✅ **Reset Password**
+  Future<bool> resetPasswordCompany({
+    required String email,
+    required String newPassword,
+    required String token, // Assuming reset token is required
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse("$companyBaseUrl/ResetPassword"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "emailId": email,
+          "token": token,
+          "newPassword": newPassword,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        print("✅ Password reset successful");
+        return true;
+      } else {
+        print("❌ Reset password failed: ${response.body}");
+      }
+    } catch (e) {
+      print("⚠️ Reset password error: $e");
+    }
+    return false;
+  }
+
   /// ✅ **Get User Details**
   Future<Map<String, dynamic>?> getUserDetails(String email) async {
     try {
@@ -262,6 +312,36 @@ class AuthServices {
         'statusMessage': 'Exception occurred: $e'
       };
     }
+  }
+
+  Future<bool> logInCompany({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse("$companyBaseUrl/CompanySignIn"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "emailId": email,
+          "password": password,
+          "active": true,
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        print("✅ Login successful: ${response.body}");
+        return true;
+      } else if(response.statusCode == 200){
+        print("✅ Login successful: ${response.body}");
+        return true;
+      } else{
+        print("❌ Login failed: ${response.body}");
+      }
+    } catch (e) {
+      print("⚠️ Login error: $e");
+    }
+    return false;
   }
 
   /// ✅ **Log Out** (Handled locally)

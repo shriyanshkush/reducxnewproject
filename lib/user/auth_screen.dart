@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled2/user/register_screen.dart';
 import 'package:untitled2/user/registration_page.dart';
@@ -24,17 +23,22 @@ class _AuthScreenState extends State<AuthScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-
+          title: Text("SignUp   or   Login",style: TextStyle(color: Colors.white),),
           elevation: 0,
-          bottom: TabBar(
-            labelColor: Colors.orange,
-            unselectedLabelColor: Colors.grey,
-            indicatorColor: Colors.orange,
-            tabs: [
-              Tab(text: "Create Account"),
-              Tab(text: "Login"),
-            ],
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(50),
+            child: Container(
+              color: Colors.white,
+              child: TabBar(
+                labelColor: Colors.orange,
+                unselectedLabelColor: Colors.grey,
+                indicatorColor: Colors.orange,
+                tabs: [
+                  Tab(text: "Create Account",),
+                  Tab(text: "Login"),
+                ],
+              ),
+            ),
           ),
         ),
         body: TabBarView(

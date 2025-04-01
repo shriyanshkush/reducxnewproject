@@ -14,39 +14,39 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreen extends State<SplashScreen> {
-  final GetIt _getIt=GetIt.instance;
+  final GetIt _getIt = GetIt.instance;
   late NavigationService _navigationService;
-  late AuthServices _authservice;
-  //late DatabaseServices _databaseServices;
+  late AuthServices _authService;
+
   @override
   void initState() {
     super.initState();
-    _authservice = _getIt.get<AuthServices>();
-    //_databaseServices = _getIt.get<DatabaseServices>();
+    _authService = _getIt.get<AuthServices>();
+    _navigationService = _getIt.get<NavigationService>(); // Initialize before usage
 
-    Timer(Duration(seconds: 3), () async {
-      _navigationService = _getIt.get<NavigationService>();
-
+    Timer(Duration(seconds: 3), () {
       _navigationService.pushReplacementnamed("/home");
-
     });
   }
 
-  // Future<String> DecideUserRole(String userId) async {
-  //   String isUser = await _databaseServices.decideUser(userId);
-  //   print("printing user:${isUser}");
-  //   return isUser=='user' ? "/userhome" : "/admindash";
-  // }
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: "ProFixer",
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(backgroundColor:Colors.black,
-        body: Center(
-          child: Image.asset("assets/logo.png", height: 24),
-        )),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center, // Center elements
+          children: [
+            Image.asset("assets/img.png", height: 300),
+            SizedBox(height: 20), // Add spacing
+            Text(
+              "On Demand Home Services",
+              style: TextStyle(fontSize: 25, color: Colors.white), // Add color
+              textAlign: TextAlign.center,
+            )
+          ],
+        ),
+      ),
     );
   }
-
 }

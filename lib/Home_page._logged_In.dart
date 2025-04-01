@@ -4,19 +4,21 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:untitled2/models/Services_model.dart';
+import 'package:untitled2/user/AllServicesPage.dart';
 import 'dart:convert';
 
 import '../services/Alert_services.dart';
 import '../services/Navigation_services.dart';
 import '../services/auth_services.dart';
-import 'AllServicesPage.dart';
 
-class HomePage extends StatefulWidget {
+class HomePageLoggedIN extends StatefulWidget {
+  const HomePageLoggedIN({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePageLoggedIN> {
 
   final GetIt _getIt = GetIt.instance;
   late NavigationService _navigationService;
@@ -191,23 +193,23 @@ class _HomePageState extends State<HomePage> {
               Container(
                 padding: EdgeInsets.all(16),
                 child: Column(
-                  children:[ Text(
-                    "Didn't find your service?",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.yellow[800],
-                      fontSize: 15,
-                    ),
-                  ),
-                    Text(
-                      "Don't worry, you can post your requirements",
+                    children:[ Text(
+                      "Didn't find your service?",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.yellow[800],
                         fontSize: 15,
                       ),
                     ),
-                  ]
+                      Text(
+                        "Don't worry, you can post your requirements",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.yellow[800],
+                          fontSize: 15,
+                        ),
+                      ),
+                    ]
                 ),
               ),
               SizedBox(height: 25),
@@ -239,29 +241,29 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey[800],
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 3,
-                        ),
-                        onPressed: () {
-                          _showDialog(context);
-                        },
-                        child: Text("Register",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.only(left: 8.0),
+                  //     child: ElevatedButton(
+                  //       style: ElevatedButton.styleFrom(
+                  //         backgroundColor: Colors.grey[800],
+                  //         padding: EdgeInsets.symmetric(vertical: 16),
+                  //         shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(12),
+                  //         ),
+                  //         elevation: 3,
+                  //       ),
+                  //       onPressed: () {
+                  //         _showDialog(context);
+                  //       },
+                  //       child: Text("Register",
+                  //           style: TextStyle(
+                  //               color: Colors.white,
+                  //               fontSize: 16,
+                  //               fontWeight: FontWeight.bold)),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ],
@@ -295,14 +297,14 @@ class _HomePageState extends State<HomePage> {
               });
 
               // Handle navigation based on the tapped index
-              if (index == 1) { // Category is at index 2
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AllServicesPage(services: services),
-                  ),
-                );
-              }
+              // if (index == 2) { // Category is at index 2
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => AllServicesPage(services: services),
+              //     ),
+              //   );
+              // }
               // You can add more cases for other tabs if needed
             },
             items: [
@@ -310,18 +312,18 @@ class _HomePageState extends State<HomePage> {
                 icon: Icon(Icons.home, size: 26),
                 label: "Home",
               ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.shopping_cart, size: 26),
-              //   label: "Checkout",
-              // ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.category, size: 26),
-                label: "Category",
+                icon: Icon(Icons.calendar_month, size: 26),
+                label: "My bookings",
               ),
               // BottomNavigationBarItem(
-              //   icon: Icon(Icons.person, size: 26),
-              //   label: "Profile",
+              //   icon: Icon(Icons.category, size: 26),
+              //   label: "Category",
               // ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person, size: 26),
+                label: "Profile",
+              ),
             ],
           ),
         ),

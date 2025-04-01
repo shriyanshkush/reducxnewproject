@@ -13,7 +13,6 @@ class AllServicesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("All Categories"),
-        backgroundColor: Colors.black,
         elevation: 0,
       ),
       body: Padding(

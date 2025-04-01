@@ -1,5 +1,6 @@
 // Navigation_services.dart
 import 'package:flutter/material.dart';
+import 'package:untitled2/Home_page._logged_In.dart';
 
 import '../Splash_screen.dart';
 import '../company/company_auth_screen.dart';
@@ -20,6 +21,7 @@ class NavigationService {
     "/home": (context) => HomePage(),
     "/registration": (context) => AuthScreen(),
     "/companyregistration":(context)=>CompanyAuthScreen(),
+    "/homeloggedIn":(context)=>HomePageLoggedIN()
   };
 
   void push(MaterialPageRoute route) {
@@ -36,6 +38,10 @@ class NavigationService {
   void pushReplacementnamed(String routname) {
     navigatorkey.currentState?.pushReplacementNamed(routname);
   }
+
+  // void pushReplacementnamed(String routeName) {
+  //   navigatorkey.currentState?.pushNamedAndRemoveUntil(routeName, (route) => false);
+  // }
 
   void goback() {
     navigatorkey.currentState?.pop();

@@ -99,38 +99,52 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 _buildLabel("Username"),
                 RoundedTextFormField(textEditingController: _nameController, hintText: "Enter your username",validator: (value) => value!.isEmpty ? 'Required field' : null,),
                 SizedBox(height: 16),
-                _buildLabel("Upload Profile Picture"),
-                Row(
-                  children: [
-                    _companyLogo != null
-                        ? ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(_companyLogo!, width: 60, height: 60, fit: BoxFit.cover),
-                    )
-                        : Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Icon(Icons.image, color: Colors.grey[600]),
-                    ),
-                    SizedBox(width: 12),
-                    ElevatedButton.icon(
-                      onPressed: _pickLogo,
-                      icon: Icon(Icons.cloud_upload),
-                      label: Text("User Photo"),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black87,
-                        foregroundColor: Colors.white,
-                      ),
-                    )
-                  ],
+                // _buildLabel("Upload Profile Picture"),
+                // Row(
+                //   children: [
+                //     _companyLogo != null
+                //         ? ClipRRect(
+                //       borderRadius: BorderRadius.circular(8),
+                //       child: Image.file(_companyLogo!, width: 60, height: 60, fit: BoxFit.cover),
+                //     )
+                //         : Container(
+                //       width: 60,
+                //       height: 60,
+                //       decoration: BoxDecoration(
+                //         color: Colors.grey[300],
+                //         borderRadius: BorderRadius.circular(8),
+                //       ),
+                //       child: Icon(Icons.image, color: Colors.grey[600]),
+                //     ),
+                //     SizedBox(width: 12),
+                //     ElevatedButton.icon(
+                //       onPressed: _pickLogo,
+                //       icon: Icon(Icons.cloud_upload),
+                //       label: Text("User Photo"),
+                //       style: ElevatedButton.styleFrom(
+                //         backgroundColor: Colors.black87,
+                //         foregroundColor: Colors.white,
+                //       ),
+                //     )
+                //   ],
+                // ),
+
+                _buildLabel("Email address"),
+                RoundedTextFormField(
+                  textEditingController: _emailController,
+                  hintText: "Eg: name@email.com",
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Required field';
+                    }
+                    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                    if (!emailRegex.hasMatch(value)) {
+                      return 'Enter a valid email';
+                    }
+                    return null;
+                  },
                 ),
 
-                _buildLabel("Email"),
-                RoundedTextFormField(textEditingController: _emailController, hintText: "Enter your email",validator: (value) => value!.isEmpty ? 'Required field' : null,),
                 SizedBox(height: 16),
 
                 _buildLabel("Mobile Number"),

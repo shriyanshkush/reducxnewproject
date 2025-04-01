@@ -32,16 +32,16 @@ class _SplashScreen extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.grey[800],
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Center elements
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/img.png", height: 300),
+            Image.asset("assets/logo.png", height: 50),
             SizedBox(height: 20), // Add spacing
             Text(
               "On Demand Home Services",
-              style: TextStyle(fontSize: 25, color: Colors.white), // Add color
+              style: TextStyle(fontSize: 18, color: Colors.white), // Add color
               textAlign: TextAlign.center,
             )
           ],

@@ -44,12 +44,22 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 50),
-              _buildLabel("Email Address"),
+              _buildLabel("Email address"),
               RoundedTextFormField(
                 textEditingController: emailController,
-                hintText: "Enter your email",
-                validator: (value) => value!.isEmpty ? 'Required field' : null,
+                hintText: "Eg: name@email.com",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Required field';
+                  }
+                  final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                  if (!emailRegex.hasMatch(value)) {
+                    return 'Enter a valid email';
+                  }
+                  return null;
+                },
               ),
+
               SizedBox(height: 20),
               _buildLabel("Password"),
               RoundedTextFormField(
@@ -335,7 +345,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Password Reset Successful!")),
                       );
-                      _navigationService.pushReplacementnamed("/registration");
+                      _navigationService.pushReplacementnamed("/home");
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Invalid OTP or Password Reset Failed")),

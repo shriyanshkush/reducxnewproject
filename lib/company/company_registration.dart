@@ -196,7 +196,7 @@ class _CompanyRegistrationState extends State<CompanyRegistration> {
                       icon: Icon(Icons.cloud_upload),
                       label: Text("Upload Logo"),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black87,
+                        backgroundColor: Colors.grey[800],
                         foregroundColor: Colors.white,
                       ),
                     )
@@ -323,7 +323,16 @@ class _CompanyRegistrationState extends State<CompanyRegistration> {
                 RoundedTextFormField(
                   textEditingController: _emailController,
                   hintText: "Eg: name@email.com",
-                  validator: (value) => value!.isEmpty ? 'Required field' : null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Required field';
+                    }
+                    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                    if (!emailRegex.hasMatch(value)) {
+                      return 'Enter a valid email';
+                    }
+                    return null;
+                  },
                 ),
 
                 _buildLabel("Phone Number"),
@@ -348,7 +357,7 @@ class _CompanyRegistrationState extends State<CompanyRegistration> {
                     onPressed: _isLoading ? null : _registerCompany,
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: Colors.black,
+                      backgroundColor: Colors.grey[800],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

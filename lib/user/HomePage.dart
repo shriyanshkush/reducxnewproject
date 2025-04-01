@@ -414,13 +414,13 @@ class _HomePageState extends State<HomePage> {
           actions: [
             TextButton(
               onPressed: () {
-                _navigationService.pushReplacementnamed("/registration");
+                _navigationService.pushnamed("/registration");
               },
               child: Text('User',style: TextStyle(fontSize: 16,color: Colors.black),),
             ),
             TextButton(
               onPressed: () {
-                _navigationService.pushReplacementnamed("/companyregistration");
+                _navigationService.pushnamed("/companyregistration");
               },
               child: Text('Partener',style: TextStyle(fontSize: 16,color: Colors.black)),
             ),
